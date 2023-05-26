@@ -24,3 +24,13 @@ services:
       - "6379:6379"
     volumes:
       - ./cache:/data
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: cshepard@blockchains.com
+      PGADMIN_DEFAULT_PASSWORD: password
+    ports:
+      - "4000:80"
+    volumes:
+      - ./cache/pgadmin:/var/lib/pgadmin
