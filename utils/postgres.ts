@@ -1,12 +1,12 @@
-import * as keys from "./keys"
-import pkg from "pg"
-delete pkg.native
-const { Pool } = pkg
+import * as keys from "./keys";
+import pkg from "pg";
+delete pkg.native;
+const { Pool } = pkg;
 
 export const pool = new Pool({
   user: keys.pgUser,
-  host: keys.pgHost,
+  host: keys.serverHost,
   database: keys.pgDatabase,
   password: keys.pgPassword,
   port: keys.pgPort,
-})
+});
