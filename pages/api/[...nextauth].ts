@@ -57,8 +57,14 @@ export const authOptions = {
     // ...add more providers here
   ],
   callbacks: {
+    async redirect({ baseUrl }: any) {
+      // Allows relative callback URLs
+      // Allows callback URLs on the same origin
+      return baseUrl;
+    },
     // I used these two callbacks to move some values around so that user.id is available in both the token and the session objects. might come in handy. this data is accessible in the client via getToken and getSession/useSession. since a token (token.jti) and the user id are both available in the token object, we'll call getToken to get those two values and use them as arguments for the me query
     async jwt({ token, user }: any) {
+      // user is the value returned from the authorize function above
       user && (token.user = user);
       // console.log("token", token)
       // token {
@@ -71,10 +77,22 @@ export const authOptions = {
       return token;
     },
     async session({ session, token }: any) {
-      session.user = token.user;
+      session.user = {
+        id: String(token.user.id),
+        token: token.jti,
+      };
       // console.log("session", session)
+      // session {
+      //   user: {
+      //     id: 6
+      //     token: 'cdce51a6-7d61-4e2d-9bbc-6ed288bf91a2'
+      //   }
+      // }
       return session;
     },
+  },
+  pages: {
+    signIn: "/",
   },
 };
 export default NextAuth(authOptions);
